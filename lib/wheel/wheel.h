@@ -14,6 +14,8 @@ class Wheel
         Wheel();
         void initalize(int input1, int input2, int pwmIN, char const * sideIN);
         void setDirection(char const * directionIn, int speedIn);
+        void updateSpeed(int speedIn);
+        int getSpeed();
 
    private:
         void writeMotors();

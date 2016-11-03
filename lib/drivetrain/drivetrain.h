@@ -21,9 +21,23 @@ class Drivetrain : public Wheel
   int FLPWM = 5;
   int STBY = 30;
   int STBY2 = 31;
+  //Speed variable
+  Wheel FR;
+  Wheel FL;
+  Wheel BR;
+  Wheel BL;
+
+//speed and heading variables
+  int heading;
+  int speed;
 
     public:
         Drivetrain();
+        void stop();
+        void turnLeft();
+        void turnRight();
+        void updateSpeed(int speed);
+
     private:
         void disableStandby();
 };

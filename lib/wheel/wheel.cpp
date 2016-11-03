@@ -5,8 +5,7 @@ using namespace std;
 
 Wheel :: Wheel(){
           }
-        void Wheel :: initalize(int input1, int input2, int pwmIN, char const * sideIN)
-        {
+        void Wheel :: initalize(int input1, int input2, int pwmIN, char const * sideIN){
           PWM=pwmIN;
           IN1=input1;
           IN2=input2;
@@ -38,7 +37,14 @@ Wheel :: Wheel(){
           speed=speedIn;
           writeMotors();
           }
-
+        int Wheel :: getSpeed(){
+          return speed;
+        }    
+        void Wheel :: updateSpeed(int speedIn){
+          //Change the speed of the motor
+          speed=speedIn;
+          writeMotors();
+        }
         void Wheel :: writeMotors(){
           //update to speed controller
           boolean IN1OUT = LOW;
