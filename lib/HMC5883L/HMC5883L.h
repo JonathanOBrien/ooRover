@@ -62,11 +62,13 @@ class HMC5883L
 
      MagnetometerRaw ReadRawAxis();
      MagnetometerScaled ReadScaledAxis();
- 
+
      int SetMeasurementMode(uint8_t mode);
      int SetScale(float gauss);
 
      char* GetErrorText(int errorCode);
+     float getHeading();
+     void initialize();
 
     protected:
      void Write(int address, int byte);

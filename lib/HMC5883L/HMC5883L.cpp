@@ -20,7 +20,7 @@ http://www51.honeywell.com/aero/common/documents/myaerospacecatalog-documents/De
 
 */
 
-#include <Arduino.h> 
+#include <Arduino.h>
 #include "HMC5883L.h"
 
 HMC5883L::HMC5883L()
@@ -93,7 +93,7 @@ int HMC5883L::SetScale(float gauss)
     }
     else
         return ErrorCode_1_Num;
-    
+
     // Setting is in the top 3 bits of the register.
     regValue = regValue << 5;
     Write(ConfigurationRegisterB, regValue);
@@ -117,7 +117,7 @@ uint8_t* HMC5883L::Read(int address, int length)
  Wire.beginTransmission(HMC5883L_Address);
  Wire.write(address);
  Wire.endTransmission();
- 
+
  Wire.beginTransmission(HMC5883L_Address);
  Wire.requestFrom(HMC5883L_Address, length);
 
@@ -138,6 +138,28 @@ char* HMC5883L::GetErrorText(int errorCode)
 {
     if(ErrorCode_1_Num == 1)
         return ErrorCode_1;
-    
+
     return "Error not defined.";
+}
+
+void HMC5883L::initialize(){
+ //Setup the HMC5883L, and check for errors
+ int error;
+ error = SetScale(1.3); //Set the scale of the compass.
+ if(error != 0) Serial.println(GetErrorText(error)); //check if there is an error, and print if so
+
+ error = SetMeasurementMode(Measurement_Continuous); // Set the measurement mode to Continuous
+ if(error != 0) Serial.println(GetErrorText(error)); //check if there is an error, and print if so
+}
+
+float HMC5883L::getHeading(){
+ //Get the reading from the HMC5883L and calculate the heading
+ MagnetometerScaled scaled = ReadScaledAxis(); //scaled values from compass.
+ float heading = atan2(scaled.YAxis, scaled.XAxis);
+
+ // Correct for when signs are reversed.
+ if(heading < 0) heading += 2*PI;
+ if(heading > 2*PI) heading -= 2*PI;
+
+ return heading * RAD_TO_DEG; //radians to degrees
 }
