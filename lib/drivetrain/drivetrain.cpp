@@ -47,7 +47,7 @@ void Drivetrain :: turnRight(){
 }
 void Drivetrain :: updateSpeed(int speed){
   //Update the speed on all wheels while maintaining any turn arcs
-  //Speed input should be the amount we want to speed up 
+  //Speed input should be the amount we want to speed up
   //With min/max of -255 to 255
   //Use negative integer to slow
   FR.updateSpeed(FR.getSpeed() + speed);

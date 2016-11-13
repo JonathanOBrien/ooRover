@@ -66,13 +66,13 @@ class HMC5883L
      int SetMeasurementMode(uint8_t mode);
      int SetScale(float gauss);
 
-     char* GetErrorText(int errorCode);
+     char const* GetErrorText(int errorCode);
      float getHeading();
      void initialize();
 
     protected:
      void Write(int address, int byte);
-     uint8_t* Read(int address, int length);
+     uint8_t * Read(int address, int length);
 
     private:
      float m_Scale;

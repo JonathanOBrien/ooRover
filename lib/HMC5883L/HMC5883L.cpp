@@ -102,6 +102,7 @@ int HMC5883L::SetScale(float gauss)
 int HMC5883L::SetMeasurementMode(uint8_t mode)
 {
     Write(ModeRegister, mode);
+    return 0;
 }
 
 void HMC5883L::Write(int address, int data)
@@ -112,7 +113,7 @@ void HMC5883L::Write(int address, int data)
  Wire.endTransmission();
 }
 
-uint8_t* HMC5883L::Read(int address, int length)
+uint8_t * HMC5883L::Read(int address, int length)
 {
  Wire.beginTransmission(HMC5883L_Address);
  Wire.write(address);
@@ -134,7 +135,7 @@ uint8_t* HMC5883L::Read(int address, int length)
  return buffer;
 }
 
-char* HMC5883L::GetErrorText(int errorCode)
+char const* HMC5883L::GetErrorText(int errorCode)
 {
     if(ErrorCode_1_Num == 1)
         return ErrorCode_1;

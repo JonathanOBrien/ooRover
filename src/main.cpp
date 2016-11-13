@@ -1,12 +1,12 @@
-#include <drivetrain.h>
+#include <rover.h>
 #include "Arduino.h"
 using namespace std;
 
-Drivetrain rover();
+
+Rover rover;
 
 void setup(){
-
   }
 int main(){
-
+  rover.run();
   }
