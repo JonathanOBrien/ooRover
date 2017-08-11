@@ -1,26 +1,30 @@
-#include "wheel.h"
 #include "drivetrain.h"
-#include "Arduino.h"
+#include "wheel.h"
+#include <ioPins.h>
+#include "ArduinoMegaPins.h"
+#include "InitSystem.h"
+#include "SystemClock.h"
 using namespace std;
 
 Drivetrain :: Drivetrain(){
   //create wheels for the drivetrain
   //TODO: this needs to support more vehicle types
   //TODO: modular based on number of wheels
-  FR.initalize(FR1,FR2,FRPWM,"right");
-  FL.initalize(FL1,FL2,FLPWM,"left");
-  BR.initalize(BR1,BR2,BRPWM,"right");
-  BL.initalize(BL1,BL2,BLPWM,"left");
-
+  FR.initalize("FR","right");
+  FL.initalize("FL","left");
+  BR.initalize("BR","right");
+  BL.initalize("BL","left");
   //prepare motors for use
+  //Set the standby pins for use
+  setGpioPinModeOutput(STBY);
+  setGpioPinModeOutput(STBY2);
+  //turn off standby on both speed controllers
   disableStandby();
-
   }
 void Drivetrain :: disableStandby(){
   //disables standby setting on both speed controllers
-  //TODO: remove dependency on arduino library for digitalWrite
-  digitalWrite(STBY, HIGH);
-  digitalWrite(STBY2, HIGH);
+  setGpioPinHigh(STBY);
+  setGpioPinHigh(STBY2);
 }
 void Drivetrain :: stop(){
   //Update speed of all motors to Zero (Full Stop)
@@ -30,7 +34,7 @@ void Drivetrain :: stop(){
   BL.updateSpeed(0);
 }
 void Drivetrain :: turnLeft(){
-  //Turn left - Basic logic is to slow the left motors by 1
+  //Turn left - Basic logic is to slow the left motors by one
   //and speed the right motor up by one
   FR.updateSpeed(FR.getSpeed() + 1);
   FL.updateSpeed(FL.getSpeed() - 1);
@@ -38,7 +42,7 @@ void Drivetrain :: turnLeft(){
   BL.updateSpeed(BL.getSpeed() - 1);
 }
 void Drivetrain :: turnRight(){
-  //Turn right - Basic logic is to slow the right motors by 1
+  //Turn right - Basic logic is to slow the right motors by one
   //and speed the left motor up by one
   FR.updateSpeed(FR.getSpeed() - 1);
   FL.updateSpeed(FL.getSpeed() + 1);
