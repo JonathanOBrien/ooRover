@@ -1,7 +1,7 @@
-
+#include "drivetrain.h"
 #include "rover.h"
 #include "HMC5883L.h"
-
+#include "Arduino.h"
 using namespace std;
 
 Rover :: Rover(){
@@ -12,18 +12,6 @@ Rover :: Rover(){
   }
 void Rover :: run(){
   //Main loop of the rover
-  //Set heading to current heading at start
-  setHeading(compass.getHeading());
-  setSpeed(0);
-  //Wait 5 seconds
-  delay(5000);
-  //Go Forward for 5 seconds
-  setSpeed(128);
-  delay(5000);
-  //Go Backwards for 5 seconds
-  setSpeed(255);
-  delay(5000);
-
   }
 void Rover :: setHeading(int headingIn){
   //0-359

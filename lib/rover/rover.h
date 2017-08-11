@@ -1,6 +1,7 @@
 #ifndef ROVER_H
 #define ROVER_H
 using namespace std;
+#include "wheel.h"
 #include "drivetrain.h"
 #include "HMC5883L.h"
 

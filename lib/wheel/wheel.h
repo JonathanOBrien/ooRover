@@ -6,10 +6,13 @@ class Wheel
 {
     int direction;
     int speed;
-    char const * motorLocation;
+    int PWM;
+    int IN1;
+    int IN2;
+    int side;
     public:
         Wheel();
-        void initalize(char const * location, char const * sideIN);
+        void initalize(int input1, int input2, int pwmIN, char const * sideIN);
         void setDirection(char const * directionIn, int speedIn);
         void updateSpeed(int speedIn);
         int getSpeed();
