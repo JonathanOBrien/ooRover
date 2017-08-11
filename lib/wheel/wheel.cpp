@@ -1,27 +1,51 @@
 #include "wheel.h"
-#include "Arduino.h"
-
+#include "ArduinoPins.h"
+#include "ioPins.h"
+#include "ArduinoPins.h"
+#include "InitSystem.h"
+#include "SystemClock.h"
+#include "Pwm.h"
+#include <string.h>
+#include <stdint.h>
 using namespace std;
 
 Wheel :: Wheel(){
-          }
-        void Wheel :: initalize(int input1, int input2, int pwmIN, char const * sideIN){
-          PWM=pwmIN;
-          IN1=input1;
-          IN2=input2;
+}
+        void Wheel :: initalize(char const * location, char const * sideIN){
+          motorLocation = location;
+          //Set the default direction based on the side of the motor
           if(strcmp(sideIN,"left") == 0){
             //set side to 0
-            side=0;
+            direction=0;
             }
           else if(strcmp(sideIN,"right") == 0){
             //set side to 1;
-            side=1;
+            direction=1;
             }
-          //TODO: remove dependency on arduino library for pinMode
-          pinMode(PWM, OUTPUT);
-          pinMode(IN1, OUTPUT);
-          pinMode(IN2, OUTPUT);
+          //Initialize our ouput pins
+          //set Pin Modes
+          if(strcmp(motorLocation,"FR") == 0){
+            setGpioPinModeOutput(FRPWM);
+            setGpioPinModeOutput(FR1);
+            setGpioPinModeOutput(FR2);
+            }
+          else if(strcmp(motorLocation,"FL") == 0){
+            setGpioPinModeOutput(FLPWM);
+            setGpioPinModeOutput(FL1);
+            setGpioPinModeOutput(FL2);
+            }
+          else if(strcmp(motorLocation,"BR") == 0){
+            setGpioPinModeOutput(BRPWM);
+            setGpioPinModeOutput(BR1);
+            setGpioPinModeOutput(BR2);
+            }
+          else if(strcmp(motorLocation,"BL") == 0){
+            setGpioPinModeOutput(BLPWM);
+            setGpioPinModeOutput(BL1);
+            setGpioPinModeOutput(BL2);
+            }
         }
+
         void Wheel :: setDirection(char const * directionIn, int speedIn){
           if(strcmp(directionIn,"forward") == 0){
             //direction forward was specified
@@ -39,7 +63,7 @@ Wheel :: Wheel(){
           }
         int Wheel :: getSpeed(){
           return speed;
-        }    
+        }
         void Wheel :: updateSpeed(int speedIn){
           //Change the speed of the motor
           speed=speedIn;
@@ -47,17 +71,60 @@ Wheel :: Wheel(){
         }
         void Wheel :: writeMotors(){
           //update to speed controller
-          boolean IN1OUT = LOW;
-          boolean IN2OUT = HIGH;
-
-          if(direction == 1){
-            IN1OUT = HIGH;
-            IN2OUT = LOW;
+          if(strcmp(motorLocation,"FR") == 0){
+            if(direction == 1){
+              //Moving Forward
+              setGpioPinLow(FR1);
+              setGpioPinHigh(FR2);
+              }
+            else{
+              //Moving Backwards
+              setGpioPinHigh(FR1);
+              setGpioPinLow(FR2);
+              }
+            //Update Speed PWM
+            writeGpioPinPwm(FRPWM, speed);
             }
-
-          //TODO: remove dependency on arduino library for digitalWrite
-          digitalWrite(IN1, IN1OUT);
-          digitalWrite(IN2, IN2OUT);
-          //TODO: remove dependency on arduino library for analogWrite
-          analogWrite(PWM,speed);
+          else if(strcmp(motorLocation,"FL") == 0){
+            if(direction == 1){
+              //Moving Forward
+              setGpioPinLow(FL1);
+              setGpioPinHigh(FL2);
+              }
+            else{
+              //Moving Backwards
+              setGpioPinHigh(FL1);
+              setGpioPinLow(FL2);
+              }
+            //Update Speed PWM
+            writeGpioPinPwm(FLPWM, speed);
+            }
+          else if(strcmp(motorLocation,"BR") == 0){
+            if(direction == 1){
+              //Moving Forward
+              setGpioPinLow(BR1);
+              setGpioPinHigh(BR2);
+              }
+            else{
+              //Moving Backwards
+              setGpioPinHigh(BR1);
+              setGpioPinLow(BR2);
+              }
+            //Update Speed PWM
+            writeGpioPinPwm(BRPWM, speed);
+            }
+          else if(strcmp(motorLocation,"BL") == 0){
+            if(direction == 1){
+              //Moving Forward
+              setGpioPinLow(BL1);
+              setGpioPinHigh(BL2);
+              }
+            else{
+              //Moving Backwards
+              setGpioPinHigh(BL1);
+              setGpioPinLow(BL2);
+              }
+            //Update Speed PWM
+            writeGpioPinPwm(BLPWM, speed);
+            }
         }
