@@ -23,7 +23,7 @@ http://www51.honeywell.com/aero/common/documents/myaerospacecatalog-documents/De
 #ifndef HMC5883L_h
 #define HMC5883L_h
 
-#include <Arduino.h>
+
 #include <Wire.h>
 
 

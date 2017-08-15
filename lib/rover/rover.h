@@ -14,6 +14,8 @@ class Rover : public Drivetrain, public HMC5883L
     public:
         Rover();
         void run();
+        void autoPilot();
+        void manual();
         void setHeading(int headingIn);
         void setSpeed(int speedIn);
     private:
