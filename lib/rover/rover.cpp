@@ -4,6 +4,7 @@
 #include "HMC5883L.h"
 #include "USART2.h"
 #include "SystemClock.h"
+#include "console.h"
 
 using namespace std;
 
@@ -14,11 +15,11 @@ Rover :: Rover(){
   initPwmTimer2();
   initPwmTimer4();
   initPwmTimer3();
-  initSystemClock();
   //Setup Compass
   compass.initialize();
   USART2::start(9600);
   Drivetrain drivetrain;
+  Console console;
   }
 void Rover :: run(){
   //Main Rover Loop Operation
