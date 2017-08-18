@@ -7,9 +7,9 @@ class Console
     public:
         Console();
         int checkMessages();
-        char * readMessage();
-        void send(char *);
-        void sendLine(char *);
+        char readMessage();
+        void send(const char*);
+        void sendLine(const char*);
 
 };
 #endif

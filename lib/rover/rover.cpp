@@ -5,9 +5,10 @@
 #include "USART2.h"
 #include "SystemClock.h"
 #include "console.h"
+#include "string.h"
 
 using namespace std;
-
+Console console;
 Rover :: Rover(){
   //Initialize the rover
   initSystem();
@@ -17,50 +18,50 @@ Rover :: Rover(){
   initPwmTimer3();
   //Setup Compass
   compass.initialize();
-  USART2::start(9600);
+  //USART2::start(9600);
   Drivetrain drivetrain;
-  Console console;
   }
 void Rover :: run(){
   //Main Rover Loop Operation
   while(1){
-    //Start in "Service Mode"
-    USART2::write("Service Mode: \r\n 1) Manual \r\n 2) Auto \r\n");
-    USART2::flush();
+    //Start into Select Mode menu
+    console.sendLine("Select Mode:");
+    console.sendLine("1) Manual");
+    console.sendLine("2) AutoPilot");
+    console.sendLine("2) AutoPilot");
 
     while(USART2::peek() == -1){
           delayMilliseconds(2000);
           }
     int input = USART2::read();
-    USART2::write(input);
-    USART2::write("\r\n");
 
     switch(input){
       //ASCII 1
-      case 49:
+      case (int)1:
         manual();
         return;
         //ASCII 2
-      case 50:
+      case (int)2:
         autoPilot();
         return;
+        //ASCUII 3
+      case (int)3:
+        serviceMode();
+        return;
       default:
-        USART2::write("Invalid Entry");
-        USART2::write("\r\n");
+        console.send("Invalid Entry");
       }
     }
 
   }
 void Rover :: autoPilot(){
-  USART2::write("AutoPilot System Engaged");
-  USART2::write("\r\n");
-  USART2::write("Press x to disable");
-  USART2::write("\r\n");
+  console.sendLine("AutoPilot System Engaged");
+  console.sendLine("Press x to disable");
   //Main loop of the rover
   //Set heading to current heading at start
   while(1){
     setHeading(compass.getHeading());
-    USART2::write(compass.getHeading());
+    //console.send(compass.getHeading());
     setSpeed(0);
     //Wait 5 seconds
     delay(5000);
@@ -75,15 +76,11 @@ void Rover :: autoPilot(){
 
   }
 void Rover :: manual(){
-    //Main loop of the rover
-    //Set heading to current heading at start
-    setHeading(compass.getHeading());
+    //Manual Rover Mode
     while(USART2::peek() == -1){
           delayMilliseconds(2000);
           }
     int input = USART2::read();
-    USART2::write(input);
-    USART2::write("\r\n");
     }
 void Rover :: setHeading(int headingIn){
   //0-359
@@ -103,7 +100,7 @@ void Rover :: setSpeed(int speedIn){
 void Rover :: alterCourse(){
   //turn left or right to meet heading
   //CurrentHeading-DesiredHeading=delta
-  int delta = compass.getHeading()-desiredHeading;
+  int delta = (int)compass.getHeading()-desiredHeading;
   if (delta < 0){
     //if delta negative turn right
     drivetrain.turnRight();
@@ -113,4 +110,13 @@ void Rover :: alterCourse(){
     drivetrain.turnLeft();
   }
   //else do nothing, delta = 0,
+  }
+void serviceMode(){
+  console.sendLine("Service Mode:");
+  console.sendLine("1) Run FR");
+  console.sendLine("2) Run FL");
+  console.sendLine("3) Run BR");
+  console.sendLine("4) Run BL");
+  console.sendLine("5) Test Compass");
+  console.sendLine("6) Test FWD Distance Sensor");
   }

@@ -11,15 +11,18 @@ Console :: Console(){
     USART2::start(9600);
   }
   int checkMessages(){
-    return 0;
+    if(USART2::peek() == -1){
+      return 0;
+      }
+    return 1;
   }
   char * readMessage(){
     return 0;
   }
-  void send(char * content){
+  void send(const char content){
     USART2::write(content);
   }
-  void sendLine(char * content){
-    send(content);
+  void sendLine(const char * content){
+    USART2::write(content);
     send("\r\n");
   }
