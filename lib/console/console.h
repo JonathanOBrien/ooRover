@@ -8,8 +8,9 @@ class Console
         Console();
         int checkMessages();
         char readMessage();
-        void send(const char*);
-        void sendLine(const char*);
+        void send(char *);
+        void sendLine(char *);
+        void newLine();
 
 };
 #endif

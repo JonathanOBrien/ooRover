@@ -1,6 +1,3 @@
-#include "ArduinoMegaPins.h"
-#include "InitSystem.h"
-#include "SystemClock.h"
 #include "USART2.h"
 #include "console.h"
 
@@ -19,10 +16,16 @@ Console :: Console(){
   char * readMessage(){
     return 0;
   }
-  void send(const char content){
+  void send(char * content){
     USART2::write(content);
+    return;
   }
-  void sendLine(const char * content){
+  void sendLine(char * content){
     USART2::write(content);
-    send("\r\n");
+    USART2::write("\r\n");
+    return;
+  }
+  void newLine(){
+    USART2::write("\r\n");
+    return;
   }

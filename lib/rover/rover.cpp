@@ -8,7 +8,9 @@
 #include "string.h"
 
 using namespace std;
-Console console;
+
+
+
 Rover :: Rover(){
   //Initialize the rover
   initSystem();
@@ -18,18 +20,33 @@ Rover :: Rover(){
   initPwmTimer3();
   //Setup Compass
   compass.initialize();
-  //USART2::start(9600);
+  USART2::start(9600);
   Drivetrain drivetrain;
+  Console console;
   }
-void Rover :: run(){
-  //Main Rover Loop Operation
-  while(1){
-    //Start into Select Mode menu
-    console.sendLine("Select Mode:");
-    console.sendLine("1) Manual");
-    console.sendLine("2) AutoPilot");
-    console.sendLine("2) AutoPilot");
 
+void Rover :: serviceMode(){
+  //Service Mode
+  int stayHere = 1;
+  while (stayHere == 1){
+    USART2::write("Service Mode:");
+    USART2::flush();
+    USART2::write("\r\n");
+    USART2::write("1) Run FR");
+    USART2::write("\r\n");
+    USART2::write("2) Run FL");
+    USART2::write("\r\n");
+    USART2::write("3) Run BR");
+    USART2::write("\r\n");
+    USART2::write("4) Run BL");
+    USART2::write("\r\n");
+    USART2::write("5) Test Compass");
+    USART2::write("\r\n");
+    USART2::write("6) Test FWD Distance Sensor");
+    USART2::write("\r\n");
+    USART2::write("Press x to exit");
+    USART2::write("\r\n");
+    USART2::flush();
     while(USART2::peek() == -1){
           delayMilliseconds(2000);
           }
@@ -37,26 +54,100 @@ void Rover :: run(){
 
     switch(input){
       //ASCII 1
-      case (int)1:
+      case 49:
+        //Run Front Right
+        drivetrain.testFR(1);
+        USART2::write("Press x to exit");
+        USART2::write("\r\n");
+        while(USART2::peek() == -1){
+              delayMilliseconds(200);
+              }
+        drivetrain.testFR(0);
+        return;
+      //ASCII 2
+      case 50:
+        //Run Back Left
+        drivetrain.testFL(1);
+        USART2::write("Press x to exit");
+        USART2::write("\r\n");
+        USART2::flush();
+        while(USART2::peek() == -1){
+              delayMilliseconds(200);
+              }
+        drivetrain.testFL(0);
+        return;
+      //ASCII 3
+      case 51:
+        //Run Back Right
+        drivetrain.testFR(1);
+        USART2::write("Press x to exit");
+        USART2::write("\r\n");
+        while(USART2::peek() == -1){
+              delayMilliseconds(200);
+            }
+        drivetrain.testFR(0);
+        return;
+        //ASCII 4
+      case 52:
+        //Run Back Left
+        drivetrain.testBL(1);
+        USART2::write("Press x to exit");
+        USART2::write("\r\n");
+        while(USART2::peek() == -1){
+              delayMilliseconds(200);
+              }
+        drivetrain.testBL(0);
+        return;
+      //ASCUII x
+      case 53:
+        stayHere = 0;
+        return;
+      default:
+        USART2::write("Invalid Entry");
+
+    }
+  }
+}
+
+void Rover :: run(){
+  //Main Rover Loop Operation
+  while(1){
+    //Start into Select Mode menu
+    USART2::write("Select Mode:");
+    USART2::write("\r\n");
+    USART2::write("1) Manual Mode");
+    USART2::write("\r\n");
+    USART2::write("2) AutoPilot");
+    USART2::write("\r\n");
+    USART2::write("3) Service Mode");
+    USART2::write("\r\n");
+    USART2::flush();
+    while(USART2::peek() == -1){
+          delayMilliseconds(2000);
+          }
+    int input = USART2::read();
+
+    switch(input){
+      //ASCII 1
+      case 49:
         manual();
         return;
         //ASCII 2
-      case (int)2:
+      case 50:
         autoPilot();
         return;
         //ASCUII 3
-      case (int)3:
+      case 51:
         serviceMode();
         return;
       default:
-        console.send("Invalid Entry");
-      }
+        USART2::write("Invalid Entry");
     }
-
   }
+}
 void Rover :: autoPilot(){
-  console.sendLine("AutoPilot System Engaged");
-  console.sendLine("Press x to disable");
+  USART2::write("AutoPilot System Engaged\r\n");
+  USART2::write("Press x to disable");
   //Main loop of the rover
   //Set heading to current heading at start
   while(1){
@@ -71,16 +162,19 @@ void Rover :: autoPilot(){
     //Go Backwards for 5 seconds
     setSpeed(255);
     delay(5000);
+    if(USART2::peek() != -1){
+      if(USART2::read == 120){
+        return;
+        }
+      }
     }
-
-
   }
 void Rover :: manual(){
     //Manual Rover Mode
     while(USART2::peek() == -1){
           delayMilliseconds(2000);
           }
-    int input = USART2::read();
+  //  int input = USART2::read();
     }
 void Rover :: setHeading(int headingIn){
   //0-359
@@ -110,13 +204,4 @@ void Rover :: alterCourse(){
     drivetrain.turnLeft();
   }
   //else do nothing, delta = 0,
-  }
-void serviceMode(){
-  console.sendLine("Service Mode:");
-  console.sendLine("1) Run FR");
-  console.sendLine("2) Run FL");
-  console.sendLine("3) Run BR");
-  console.sendLine("4) Run BL");
-  console.sendLine("5) Test Compass");
-  console.sendLine("6) Test FWD Distance Sensor");
   }
