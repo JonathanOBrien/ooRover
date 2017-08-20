@@ -3,12 +3,14 @@
 
 using namespace std;
 
+Serial2 serialOut;
+
 Console :: Console(){
   //Do Things
-    USART2::start(9600);
-  }
+  //serialOut.start(9600);
+}/*
   int checkMessages(){
-    if(USART2::peek() == -1){
+    if(serialOut.peek() == -1){
       return 0;
       }
     return 1;
@@ -17,15 +19,16 @@ Console :: Console(){
     return 0;
   }
   void send(char * content){
-    USART2::write(content);
+    serialOut.write(content);
     return;
   }
   void sendLine(char * content){
-    USART2::write(content);
-    USART2::write("\r\n");
+    serialOut.write(content);
+    serialOut.write("\r\n");
     return;
   }
   void newLine(){
-    USART2::write("\r\n");
+    serialOut.write("\r\n");
     return;
   }
+*/

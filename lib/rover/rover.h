@@ -4,11 +4,11 @@ using namespace std;
 #include "drivetrain.h"
 #include "console.h"
 #include "HMC5883L.h"
+#include "USART2.h"
 
 class Rover : public Drivetrain, public HMC5883L
 {
   HMC5883L compass;
-  Console console;
   Drivetrain drivetrain;
   int desiredSpeed;
   int desiredHeading;
