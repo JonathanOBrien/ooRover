@@ -1,0 +1,18 @@
+#include <Wire.h>
+#include <HMC5883L.h>
+
+HMC5883L compass;
+
+
+void setup(){
+ Serial.begin(9600);
+ Wire.begin();
+ compass.initialize();
+}
+
+// Our main program loop.
+void loop(){
+ Serial.println(compass.getHeading());
+ delay(100); //only here to slow down the serial print
+
+}

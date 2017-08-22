@@ -25,14 +25,14 @@ void Drivetrain :: disableStandby(){
   //disables standby setting on both speed controllers
   setGpioPinHigh(STBY);
   setGpioPinHigh(STBY2);
-}
+  }
 void Drivetrain :: stop(){
   //Update speed of all motors to Zero (Full Stop)
   FR.updateSpeed(0);
   FL.updateSpeed(0);
   BR.updateSpeed(0);
   BL.updateSpeed(0);
-}
+  }
 void Drivetrain :: turnLeft(){
   //Turn left - Basic logic is to slow the left motors by one
   //and speed the right motor up by one
@@ -40,7 +40,7 @@ void Drivetrain :: turnLeft(){
   FL.updateSpeed(FL.getSpeed() - 1);
   BR.updateSpeed(BR.getSpeed() + 1);
   BL.updateSpeed(BL.getSpeed() - 1);
-}
+  }
 void Drivetrain :: turnRight(){
   //Turn right - Basic logic is to slow the right motors by one
   //and speed the left motor up by one
@@ -48,7 +48,7 @@ void Drivetrain :: turnRight(){
   FL.updateSpeed(FL.getSpeed() + 1);
   BR.updateSpeed(BR.getSpeed() - 1);
   BL.updateSpeed(BL.getSpeed() + 1);
-}
+  }
 void Drivetrain :: updateSpeed(int speed){
   //Update the speed on all wheels while maintaining any turn arcs
   //Speed input should be the amount we want to speed up
@@ -58,4 +58,36 @@ void Drivetrain :: updateSpeed(int speed){
   FL.updateSpeed(FL.getSpeed() + speed);
   BR.updateSpeed(BR.getSpeed() + speed);
   BL.updateSpeed(BL.getSpeed() + speed);
+  }
+void Drivetrain :: testBR(int in){
+  if (in == 1){
+    BR.updateSpeed(255);
+    }
+  else{
+    BR.updateSpeed(0);
+    }
+  }
+void Drivetrain :: testBL(int in){
+  if (in == 1){
+    BL.updateSpeed(255);
+    }
+  else{
+    BL.updateSpeed(0);
+    }
+  }
+void Drivetrain :: testFL(int in){
+  if (in == 1){
+    FL.updateSpeed(255);
+    }
+  else{
+    FL.updateSpeed(0);
+    }
+  }
+void Drivetrain :: testFR(int in){
+  if (in == 1){
+    FR.updateSpeed(255);
+    }
+  else{
+    FR.updateSpeed(0);
+    }
 }
