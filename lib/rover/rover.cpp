@@ -178,23 +178,38 @@ void Rover :: manual(){
         //W
         speed=speed+1;
         setSpeed(speed);
+<<<<<<< HEAD
         serialOut.println("w\r");
+=======
+        serialOut.println("w");
+>>>>>>> 069e3f164c719a8a145a857f4021b132ce618537
         continue;
       case 115:
       //S
       speed=speed-1;
       setSpeed(speed);
+<<<<<<< HEAD
         serialOut.println("s\r");
+=======
+        serialOut.println("s");
+>>>>>>> 069e3f164c719a8a145a857f4021b132ce618537
         continue;
       case 97:
         //A
         drivetrain.turnLeft();
+<<<<<<< HEAD
         serialOut.println("a\r");
+=======
+        serialOut.println("a");
+>>>>>>> 069e3f164c719a8a145a857f4021b132ce618537
         continue;
       case 100:
         //D
         drivetrain.turnRight();
         serialOut.println("d\r");
+=======
+        serialOut.println("d");
+>>>>>>> 069e3f164c719a8a145a857f4021b132ce618537
         continue;
       case 101:
         //E
@@ -204,13 +219,21 @@ void Rover :: manual(){
       case 99:
         //C
         setSpeed(0);
+<<<<<<< HEAD
         serialOut.println("c\r");
+=======
+        serialOut.println("c");
+>>>>>>> 069e3f164c719a8a145a857f4021b132ce618537
         continue;
       case 120:
         //X
         break;
       default:
+<<<<<<< HEAD
         serialOut.println("Invald Entry\r");
+=======
+        serialOut.println("Invald Entry");
+>>>>>>> 069e3f164c719a8a145a857f4021b132ce618537
         continue;
       }
     }
