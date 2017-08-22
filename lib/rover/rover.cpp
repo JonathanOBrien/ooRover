@@ -21,7 +21,6 @@ Rover :: Rover(){
   Drivetrain drivetrain;
   serialOut.start(9600);
   //Console console;
-  desiredSpeed=0;
   }
 
 void Rover :: serviceMode(){
@@ -58,7 +57,7 @@ void Rover :: serviceMode(){
       case 50:
         //Run Back Left
         drivetrain.testFL(1);
-        serialOut.println("Press any key to exit\n\r");
+        serialOut.println("Press x to exit\n\r");
         serialOut.flush();
         while(serialOut.peek() == -1){
               delayMilliseconds(200);
@@ -69,7 +68,7 @@ void Rover :: serviceMode(){
       case 51:
         //Run Back Right
         drivetrain.testFR(1);
-        serialOut.println("Press any key to exit\n\r");
+        serialOut.println("Press x to exit\n\r");
         while(serialOut.peek() == -1){
               delayMilliseconds(200);
             }
@@ -79,26 +78,21 @@ void Rover :: serviceMode(){
       case 52:
         //Run Back Left
         drivetrain.testBL(1);
-        serialOut.println("Press any key to exit\n\r");
+        serialOut.println("Press x to exit\n\r");
         while(serialOut.peek() == -1){
               delayMilliseconds(200);
               }
         drivetrain.testBL(0);
         continue;
-        //ASCII 5
-      case 53:
-        //Test Compass
-        serialOut.println("/n");
-        serialOut.println(compass.getHeading());
-        serialOut.println("/r");
-        continue;
       //ASCUII x
       case 120:
           stayHere = 0;
-          break;
+          continue;
       default:
         serialOut.println("Invalid Entry\n\r");
+
     }
+    run();
   }
 
 }
@@ -113,7 +107,7 @@ void Rover :: run(){
     serialOut.write("3) Service Mode\n\r");
     serialOut.flush();
     while(serialOut.peek() == -1){
-          delayMilliseconds(200);
+          delayMilliseconds(2000);
           }
     int input = serialOut.read();
 
@@ -123,10 +117,6 @@ void Rover :: run(){
         manual();
         continue;
         //ASCII 2
-      case 109:
-          manual();
-          continue;
-          //ASCII m
       case 50:
         autoPilot();
         continue;
@@ -157,22 +147,19 @@ void Rover :: autoPilot(){
     setSpeed(255);
     delay(5000);
     if(serialOut.peek() != -1){
-      if(serialOut.read() == 120){
+      /*if(serialOut.read == 120){
         return;
-      }
+      }*/
       }
     }
   run();
   }
 void Rover :: manual(){
     //Manual Rover Mode
-    serialOut.println("Manual Control Activated\r");
-    serialOut.println("Commands: WSAD\r");
-    int speed = 0;
-  while(1){
     while(serialOut.peek() == -1){
-          delayMilliseconds(20);
+          delayMilliseconds(2000);
           }
+<<<<<<< HEAD
     switch(serialOut.read()){
       case 119:
         //W
@@ -236,14 +223,15 @@ void Rover :: manual(){
 >>>>>>> 069e3f164c719a8a145a857f4021b132ce618537
         continue;
       }
+=======
+  //  int input = serialOut.read();
+>>>>>>> parent of 4d45810... Enabled Manual Mode
     }
-  }
 void Rover :: setHeading(int headingIn){
   //0-359
   //Sanitize Data
   if (headingIn > 359) return;
   if (headingIn < 0) return;
-  //change desired heading to input
   desiredHeading = headingIn;
   }
 void Rover :: setSpeed(int speedIn){
