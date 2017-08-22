@@ -2,7 +2,9 @@
 #define ROVER_H
 using namespace std;
 #include "drivetrain.h"
+#include "console.h"
 #include "HMC5883L.h"
+#include "USART2.h"
 
 class Rover : public Drivetrain, public HMC5883L
 {
@@ -18,6 +20,7 @@ class Rover : public Drivetrain, public HMC5883L
         void manual();
         void setHeading(int headingIn);
         void setSpeed(int speedIn);
+        void serviceMode();
     private:
         void alterCourse();
 };
