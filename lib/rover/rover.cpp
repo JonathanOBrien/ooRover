@@ -68,12 +68,12 @@ void Rover :: serviceMode(){
       //ASCII 3
       case 51:
         //Run Back Right
-        drivetrain.testFR(1);
+        drivetrain.testBR(1);
         serialOut.println("Press any key to exit\n\r");
         while(serialOut.peek() == -1){
               delayMilliseconds(200);
             }
-        drivetrain.testFR(0);
+        drivetrain.testBR(0);
         continue;
         //ASCII 4
       case 52:
@@ -168,8 +168,10 @@ void Rover :: manual(){
     //Manual Rover Mode
     serialOut.println("Manual Control Activated\r");
     serialOut.println("Commands: WSAD\r");
+    serialOut.println("Press x to exit\r");
     int speed = 0;
-  while(1){
+    int stayHere=1;
+  while(stayHere){
     while(serialOut.peek() == -1){
           delayMilliseconds(20);
           }
@@ -199,15 +201,22 @@ void Rover :: manual(){
       case 101:
         //E
         setSpeed(255);
-        drivetrain.stop();
         continue;
       case 99:
         //C
         setSpeed(0);
+        drivetrain.stop();
         serialOut.println("c\r");
         continue;
       case 120:
         //X
+        setSpeed(-255);
+        serialOut.println("c\r");
+        break;
+      case 49:
+        //1
+        stayHere=0;
+        serialOut.println("exiting manual mode.\r");
         break;
       default:
         serialOut.println("Invald Entry\r");

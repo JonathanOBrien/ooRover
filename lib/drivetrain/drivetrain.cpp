@@ -54,10 +54,10 @@ void Drivetrain :: updateSpeed(int speed){
   //Speed input should be the amount we want to speed up
   //With min/max of -255 to 255
   //Use negative integer to slow
-  FR.updateSpeed(FR.getSpeed() + speed);
-  FL.updateSpeed(FL.getSpeed() + speed);
-  BR.updateSpeed(BR.getSpeed() + speed);
-  BL.updateSpeed(BL.getSpeed() + speed);
+  FR.updateSpeed(speed);
+  FL.updateSpeed(speed);
+  BR.updateSpeed(speed);
+  BL.updateSpeed(speed);
   }
 void Drivetrain :: testBR(int in){
   if (in == 1){
