@@ -49,7 +49,7 @@ Wheel :: Wheel(){
         void Wheel :: setDirection(char const * directionIn, int speedIn){
           if(strcmp(directionIn,"forward") == 0){
             //direction forward was specified
-            //set direction to 0
+            //set direction to 1
             direction=0;
             }
           else if(strcmp(directionIn,"backward") == 0){
