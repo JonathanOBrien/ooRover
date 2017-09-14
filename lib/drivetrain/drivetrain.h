@@ -17,6 +17,7 @@ class Drivetrain : public Wheel
 //speed and heading variables
   int heading;
   int speed;
+  int minIncrement;
 
     public:
         Drivetrain();
@@ -28,6 +29,7 @@ class Drivetrain : public Wheel
         void testBL(int in);
         void testFL(int in);
         void testFR(int in);
+        int getMI();
 
     private:
         void disableStandby();

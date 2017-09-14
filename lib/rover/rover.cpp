@@ -159,7 +159,7 @@ void Rover :: autoPilot(){
     if(serialOut.peek() != -1){
       if(serialOut.read() == 120){
         return;
-      }
+        }
       }
     }
   run();
@@ -168,7 +168,7 @@ void Rover :: manual(){
     //Manual Rover Mode
     serialOut.println("Manual Control Activated\r");
     serialOut.println("Commands: WSAD\r");
-    serialOut.println("Press x to exit\r");
+    serialOut.println("Press 1 to quit\r");
     int speed = 0;
     int stayHere=1;
   while(stayHere){
@@ -178,14 +178,14 @@ void Rover :: manual(){
     switch(serialOut.read()){
       case 119:
         //W
-        speed=speed+1;
+        speed=speed+drivetrain.getMI();
         setSpeed(speed);
         serialOut.println("w\r");
         continue;
       case 115:
       //S
-      speed=speed-1;
-      setSpeed(speed);
+      speed=speed-drivetrain.getMI();
+        drivetrain.updateSpeed(speed);
         serialOut.println("s\r");
         continue;
       case 97:
@@ -212,12 +212,12 @@ void Rover :: manual(){
         //X
         setSpeed(-255);
         serialOut.println("c\r");
-        break;
+        continue;
       case 49:
         //1
         stayHere=0;
         serialOut.println("exiting manual mode.\r");
-        break;
+        continue;
       default:
         serialOut.println("Invald Entry\r");
         continue;
