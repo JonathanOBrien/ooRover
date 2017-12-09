@@ -76,7 +76,7 @@ Wheel :: Wheel(){
           return speed;
         }
         void  Wheel :: updateSpeed(int speedIn){
-          //Check if we need to change the direction
+/*        //Check if we need to change the direction
           //(lnzs < 0 && speedIn < 0) || (lnzs > 0 && speedIn > 0)
           if((lastNonZeroSpeed < 0 && speedIn > 0) || (lastNonZeroSpeed > 0 && speedIn < 0)){
             //Set direction to 2 (swap current direction)
@@ -85,7 +85,7 @@ Wheel :: Wheel(){
           //Set the last non-zero speed
           if (speed != 0){
             lastNonZeroSpeed = speed;
-            }
+          }*/
           //Update current speed
           speed=speedIn;
           //Updte the motors
@@ -108,7 +108,7 @@ Wheel :: Wheel(){
             writeGpioPinPwm(FRPWM, speed);
             }
           else if(strcmp(motorLocation,"FL") == 0){
-            if(direction == 1){
+            if(direction == 0){
               //Moving Forward
               setGpioPinLow(FL1);
               setGpioPinHigh(FL2);
@@ -136,7 +136,7 @@ Wheel :: Wheel(){
             writeGpioPinPwm(BRPWM, speed);
             }
           else if(strcmp(motorLocation,"BL") == 0){
-            if(direction == 1){
+            if(direction == 0){
               //Moving Forward
               setGpioPinLow(BL1);
               setGpioPinHigh(BL2);

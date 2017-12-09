@@ -33,6 +33,7 @@ class Drivetrain : public Wheel
 
     private:
         void disableStandby();
+        int calcDelta(int speedIn, int operation);
 };
 
 #endif

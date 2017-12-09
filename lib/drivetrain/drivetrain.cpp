@@ -8,6 +8,7 @@ using namespace std;
 
 //Define the minimum increment
 int minIncrement = 32;
+int nextDirection = 0;
 
 Drivetrain :: Drivetrain(){
   //create wheels for the drivetrain
@@ -39,23 +40,66 @@ void  Drivetrain :: stop(){
 void  Drivetrain :: turnLeft(){
   //Turn left - Basic logic is to slow the left motors by one
   //and speed the right motor up by one
-  FR.updateSpeed(FR.getSpeed() + minIncrement);
-  FL.updateSpeed(FL.getSpeed() - minIncrement);
-  BR.updateSpeed(BR.getSpeed() + minIncrement);
-  BL.updateSpeed(BL.getSpeed() - minIncrement);
+  FR.updateSpeed(calcDelta(FR.getSpeed(), 1));
+  FR.setDirection(nextDirection);
+  FL.updateSpeed(calcDelta(FL.getSpeed(), 0));
+  FL.setDirection(nextDirection);
+  BR.updateSpeed(calcDelta(BR.getSpeed(), 1));
+  BR.setDirection(nextDirection);
+  BL.updateSpeed(calcDelta(BL.getSpeed(), 0));
+  BL.setDirection(nextDirection);
   }
 void  Drivetrain :: turnRight(){
   //Turn right - Basic logic is to slow the right motors by one
   //and speed the left motor up by one
-  FR.updateSpeed(FR.getSpeed() - minIncrement);
-  FL.updateSpeed(FL.getSpeed() + minIncrement);
-  BR.updateSpeed(BR.getSpeed() - minIncrement);
-  BL.updateSpeed(BL.getSpeed() + minIncrement);
+  FR.updateSpeed(calcDelta(FR.getSpeed(), 0));
+  FR.setDirection(nextDirection);
+  FL.updateSpeed(calcDelta(FL.getSpeed(), 1));
+  FL.setDirection(nextDirection);
+  BR.updateSpeed(calcDelta(BR.getSpeed(), 0));
+  BR.setDirection(nextDirection);
+  BL.updateSpeed(calcDelta(BL.getSpeed(), 1));
+  BL.setDirection(nextDirection);
   }
+
+int Drivetrain :: calcDelta(int speedIn, int operation) {
+  //Operation 1 = Addition, 0 = Subtraction
+  //if current speed -/+ minIncrement < 0
+  //Run this for each motor
+  float delta;
+  //Subtraction
+  if (operation == 0){
+    delta = speedIn - minIncrement;
+    if(delta < 0){
+      nextDirection = 1;
+    }
+    else{
+      nextDirection = 0;
+    }
+  }
+    //Addition
+  else{
+    delta = speedIn + minIncrement;
+    if (delta < 0){
+      nextDirection = 0;
+      }
+    else{
+      nextDirection = 1;
+      }
+    }
+  return static_cast<int>(delta);
+
+  //set direction 1
+  //if current speed -/+ minIncrement > 0
+  //Set direction 0
+  //updateSpeed to delta
+}
+
+
 void  Drivetrain :: updateSpeed(int speedIn){
   //Does not maintain arcs
   //Speed input should be the new speed
-  //With min/max of -255 to 255
+  //With min/max of 0 to 255
   //Use negative integer to reverse
   speed=speedIn;
   FR.updateSpeed(speed);
