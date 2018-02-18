@@ -40,26 +40,18 @@ void  Drivetrain :: stop(){
 void  Drivetrain :: turnLeft(){
   //Turn left - Basic logic is to slow the left motors by one
   //and speed the right motor up by one
-  FR.updateSpeed(calcDelta(FR.getSpeed(), 1));
-  FR.setDirection(nextDirection);
-  FL.updateSpeed(calcDelta(FL.getSpeed(), 0));
-  FL.setDirection(nextDirection);
-  BR.updateSpeed(calcDelta(BR.getSpeed(), 1));
-  BR.setDirection(nextDirection);
-  BL.updateSpeed(calcDelta(BL.getSpeed(), 0));
-  BL.setDirection(nextDirection);
+  FR.updateSpeed(FR.getSpeed() + minIncrement);
+  FL.updateSpeed(FL.getSpeed() - minIncrement);
+  BR.updateSpeed(BR.getSpeed() + minIncrement);
+  BL.updateSpeed(BL.getSpeed() - minIncrement);
   }
 void  Drivetrain :: turnRight(){
   //Turn right - Basic logic is to slow the right motors by one
   //and speed the left motor up by one
-  FR.updateSpeed(calcDelta(FR.getSpeed(), 0));
-  FR.setDirection(nextDirection);
-  FL.updateSpeed(calcDelta(FL.getSpeed(), 1));
-  FL.setDirection(nextDirection);
-  BR.updateSpeed(calcDelta(BR.getSpeed(), 0));
-  BR.setDirection(nextDirection);
-  BL.updateSpeed(calcDelta(BL.getSpeed(), 1));
-  BL.setDirection(nextDirection);
+  FR.updateSpeed(FR.getSpeed() - minIncrement);
+  FL.updateSpeed(FL.getSpeed() + minIncrement);
+  BR.updateSpeed(BR.getSpeed() - minIncrement);
+  BL.updateSpeed(BL.getSpeed() + minIncrement);
   }
 
 int Drivetrain :: calcDelta(int speedIn, int operation) {
