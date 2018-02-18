@@ -75,6 +75,15 @@ Wheel :: Wheel(){
         int   Wheel :: getSpeed(){
           return speed;
         }
+        void  Wheel :: testMode(int mode){
+          //Test this wheel
+          if (mode == 1){
+            updateSpeed(255);
+            }
+          else{
+            updateSpeed(0);
+            }
+        }
         void  Wheel :: updateSpeed(int speedIn){
 /*        //Check if we need to change the direction
           //(lnzs < 0 && speedIn < 0) || (lnzs > 0 && speedIn > 0)
@@ -88,6 +97,14 @@ Wheel :: Wheel(){
           }*/
           //Update current speed
           speed=speedIn;
+          if(speed < -255){
+            //Don't let the speed go below 0
+            speed = -255;
+            }
+          else if(speed > 255){
+            //Don't let the speed go above 255
+            speed=255;
+          }
           //Updte the motors
           writeMotors();
         }

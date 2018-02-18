@@ -32,37 +32,41 @@ void  Drivetrain :: disableStandby(){
   }
 void  Drivetrain :: stop(){
   //Update speed of all motors to Zero (Full Stop)
-  FR.updateSpeed(0);
-  FL.updateSpeed(0);
-  BR.updateSpeed(0);
-  BL.updateSpeed(0);
+  updateSpeed(0);
   }
 void  Drivetrain :: turnLeft(){
-  //Turn left - Basic logic is to slow the left motors by one
-  //and speed the right motor up by one
-  FR.updateSpeed(calcDelta(FR.getSpeed(), 1));
-  FR.setDirection(nextDirection);
-  FL.updateSpeed(calcDelta(FL.getSpeed(), 0));
-  FL.setDirection(nextDirection);
-  BR.updateSpeed(calcDelta(BR.getSpeed(), 1));
-  BR.setDirection(nextDirection);
-  BL.updateSpeed(calcDelta(BL.getSpeed(), 0));
-  BL.setDirection(nextDirection);
+  //Turn left - Basic logic is to slow the left motors by n
+  //and speed the right motor up by n
+  FR.updateSpeed(FR.getSpeed() + minIncrement);
+  FL.updateSpeed(FL.getSpeed() - minIncrement);
+  BR.updateSpeed(BR.getSpeed() + minIncrement);
+  BL.updateSpeed(BL.getSpeed() - minIncrement);
   }
 void  Drivetrain :: turnRight(){
-  //Turn right - Basic logic is to slow the right motors by one
-  //and speed the left motor up by one
-  FR.updateSpeed(calcDelta(FR.getSpeed(), 0));
-  FR.setDirection(nextDirection);
-  FL.updateSpeed(calcDelta(FL.getSpeed(), 1));
-  FL.setDirection(nextDirection);
-  BR.updateSpeed(calcDelta(BR.getSpeed(), 0));
-  BR.setDirection(nextDirection);
-  BL.updateSpeed(calcDelta(BL.getSpeed(), 1));
-  BL.setDirection(nextDirection);
+  //Turn right - Basic logic is to slow the right motors by n
+  //and speed the left motor up by n
+  FR.updateSpeed(FR.getSpeed() - minIncrement);
+  FL.updateSpeed(FL.getSpeed() + minIncrement);
+  BR.updateSpeed(BR.getSpeed() - minIncrement);
+  BL.updateSpeed(BL.getSpeed() + minIncrement);
   }
-
-int Drivetrain :: calcDelta(int speedIn, int operation) {
+void  Drivetrain :: accelerate(){
+    //Turn right - Basic logic is to slow the right motors by n
+    //and speed the left motor up by n
+    FR.updateSpeed(FR.getSpeed() + minIncrement);
+    FL.updateSpeed(FL.getSpeed() + minIncrement);
+    BR.updateSpeed(BR.getSpeed() + minIncrement);
+    BL.updateSpeed(BL.getSpeed() + minIncrement);
+    }
+void  Drivetrain :: decelerate(){
+    //Turn right - Basic logic is to slow the right motors by n
+    //and speed the left motor up by n
+    FR.updateSpeed(FR.getSpeed() - minIncrement);
+    FL.updateSpeed(FL.getSpeed() - minIncrement);
+    BR.updateSpeed(BR.getSpeed() - minIncrement);
+    BL.updateSpeed(BL.getSpeed() - minIncrement);
+    }
+int   Drivetrain :: calcDelta(int speedIn, int operation) {
   //Operation 1 = Addition, 0 = Subtraction
   //if current speed -/+ minIncrement < 0
   //Run this for each motor
@@ -94,14 +98,20 @@ int Drivetrain :: calcDelta(int speedIn, int operation) {
   //Set direction 0
   //updateSpeed to delta
 }
-
-
 void  Drivetrain :: updateSpeed(int speedIn){
   //Does not maintain arcs
   //Speed input should be the new speed
   //With min/max of 0 to 255
   //Use negative integer to reverse
   speed=speedIn;
+  if(speed < 0){
+    //Don't let the speed go below 0
+    speed = 0;
+    }
+  else if(speed > 255){
+    //Don't let the speed go above 255
+    speed=255;
+  }
   FR.updateSpeed(speed);
   FL.updateSpeed(speed);
   BR.updateSpeed(speed);

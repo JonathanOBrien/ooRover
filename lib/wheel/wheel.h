@@ -10,11 +10,12 @@ class Wheel
     char const * motorLocation;
     public:
         Wheel();
-        void initalize(char const * location, char const * sideIN);
-        void setDirection(int directionIn);
-        void updateSpeed(int speedIn);
-        void updateWheel(int speedIn);
-        int getSpeed();
+        void  initalize(char const * location, char const * sideIN);
+        void  setDirection(int directionIn);
+        void  updateSpeed(int speedIn);
+        void  testMode(int mode);
+        void  updateWheel(int speedIn);
+        int   getSpeed();
 
    private:
         void writeMotors();

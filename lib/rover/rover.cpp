@@ -23,7 +23,6 @@ Rover :: Rover(){
   //Console console;
   desiredSpeed=0;
   }
-
 void Rover :: serviceMode(){
   //Service Mode
   int stayHere = 1;
@@ -102,7 +101,6 @@ void Rover :: serviceMode(){
   }
 
 }
-
 void Rover :: run(){
   //Main Rover Loop Operation
   while(1){
@@ -175,17 +173,17 @@ void Rover :: manual(){
     while(serialOut.peek() == -1){
           delayMilliseconds(20);
           }
+    serialOut.println(speed);
     switch(serialOut.read()){
       case 119:
         //W
-        speed=speed+drivetrain.getMI();
-        setSpeed(speed);
+        drivetrain.accelerate();
         serialOut.println("w\r");
         continue;
       case 115:
       //S
-      speed=speed-drivetrain.getMI();
-        drivetrain.updateSpeed(speed);
+      speed=speed-32;
+        drivetrain.decelerate();
         serialOut.println("s\r");
         continue;
       case 97:
@@ -200,12 +198,13 @@ void Rover :: manual(){
         continue;
       case 101:
         //E
-        setSpeed(255);
+        drivetrain.updateSpeed(255);
+        speed=255;
         continue;
       case 99:
         //C
-        setSpeed(0);
         drivetrain.stop();
+        speed=0;
         serialOut.println("c\r");
         continue;
       case 120:
@@ -216,7 +215,7 @@ void Rover :: manual(){
       case 49:
         //1
         stayHere=0;
-        serialOut.println("exiting manual mode.\r");
+        serialOut.println("exiting manual mode\r");
         continue;
       default:
         serialOut.println("Invald Entry\r");

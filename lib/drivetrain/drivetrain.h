@@ -21,15 +21,17 @@ class Drivetrain : public Wheel
 
     public:
         Drivetrain();
-        void stop();
-        void turnLeft();
-        void turnRight();
-        void updateSpeed(int speed);
-        void testBR(int in);
-        void testBL(int in);
-        void testFL(int in);
-        void testFR(int in);
-        int getMI();
+        void  stop();
+        void  turnLeft();
+        void  accelerate();
+        void  decelerate();
+        void  turnRight();
+        void  updateSpeed(int speed);
+        void  testBR(int in);
+        void  testBL(int in);
+        void  testFL(int in);
+        void  testFR(int in);
+        int   getMI();
 
     private:
         void disableStandby();
