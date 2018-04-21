@@ -35,16 +35,26 @@ void  Drivetrain :: stop(){
   updateSpeed(0);
   }
 void  Drivetrain :: turnLeft(){
+<<<<<<< HEAD
   //Turn left - Basic logic is to slow the left motors by n
   //and speed the right motor up by n
+=======
+  //Turn left - Basic logic is to slow the left motors by one
+  //and speed the right motor up by one
+>>>>>>> e25a7887afaaf102b2e5aa2cf7921f616ef224e1
   FR.updateSpeed(FR.getSpeed() + minIncrement);
   FL.updateSpeed(FL.getSpeed() - minIncrement);
   BR.updateSpeed(BR.getSpeed() + minIncrement);
   BL.updateSpeed(BL.getSpeed() - minIncrement);
   }
 void  Drivetrain :: turnRight(){
+<<<<<<< HEAD
   //Turn right - Basic logic is to slow the right motors by n
   //and speed the left motor up by n
+=======
+  //Turn right - Basic logic is to slow the right motors by one
+  //and speed the left motor up by one
+>>>>>>> e25a7887afaaf102b2e5aa2cf7921f616ef224e1
   FR.updateSpeed(FR.getSpeed() - minIncrement);
   FL.updateSpeed(FL.getSpeed() + minIncrement);
   BR.updateSpeed(BR.getSpeed() - minIncrement);
