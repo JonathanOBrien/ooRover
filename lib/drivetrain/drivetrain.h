@@ -17,20 +17,25 @@ class Drivetrain : public Wheel
 //speed and heading variables
   int heading;
   int speed;
+  int minIncrement;
 
     public:
         Drivetrain();
-        void stop();
-        void turnLeft();
-        void turnRight();
-        void updateSpeed(int speed);
-        void testBR(int in);
-        void testBL(int in);
-        void testFL(int in);
-        void testFR(int in);
+        void  stop();
+        void  turnLeft();
+        void  accelerate();
+        void  decelerate();
+        void  turnRight();
+        void  updateSpeed(int speed);
+        void  testBR(int in);
+        void  testBL(int in);
+        void  testFL(int in);
+        void  testFR(int in);
+        int   getMI();
 
     private:
         void disableStandby();
+        int calcDelta(int speedIn, int operation);
 };
 
 #endif

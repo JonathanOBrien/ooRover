@@ -6,6 +6,10 @@
 #include "SystemClock.h"
 using namespace std;
 
+//Define the minimum increment
+int minIncrement = 32;
+int nextDirection = 0;
+
 Drivetrain :: Drivetrain(){
   //create wheels for the drivetrain
   //TODO: this needs to support more vehicle types
@@ -21,45 +25,99 @@ Drivetrain :: Drivetrain(){
   //turn off standby on both speed controllers
   disableStandby();
   }
-void Drivetrain :: disableStandby(){
+void  Drivetrain :: disableStandby(){
   //disables standby setting on both speed controllers
   setGpioPinHigh(STBY);
   setGpioPinHigh(STBY2);
   }
-void Drivetrain :: stop(){
+void  Drivetrain :: stop(){
   //Update speed of all motors to Zero (Full Stop)
-  FR.updateSpeed(0);
-  FL.updateSpeed(0);
-  BR.updateSpeed(0);
-  BL.updateSpeed(0);
+  updateSpeed(0);
   }
-void Drivetrain :: turnLeft(){
-  //Turn left - Basic logic is to slow the left motors by one
-  //and speed the right motor up by one
-  FR.updateSpeed(FR.getSpeed() + 1);
-  FL.updateSpeed(FL.getSpeed() - 1);
-  BR.updateSpeed(BR.getSpeed() + 1);
-  BL.updateSpeed(BL.getSpeed() - 1);
+void  Drivetrain :: turnLeft(){
+  //Turn left - Basic logic is to slow the left motors by n
+  //and speed the right motor up by n
+  FR.updateSpeed(FR.getSpeed() + minIncrement);
+  FL.updateSpeed(FL.getSpeed() - minIncrement);
+  BR.updateSpeed(BR.getSpeed() + minIncrement);
+  BL.updateSpeed(BL.getSpeed() - minIncrement);
   }
-void Drivetrain :: turnRight(){
-  //Turn right - Basic logic is to slow the right motors by one
-  //and speed the left motor up by one
-  FR.updateSpeed(FR.getSpeed() - 1);
-  FL.updateSpeed(FL.getSpeed() + 1);
-  BR.updateSpeed(BR.getSpeed() - 1);
-  BL.updateSpeed(BL.getSpeed() + 1);
+void  Drivetrain :: turnRight(){
+  //Turn right - Basic logic is to slow the right motors by n
+  //and speed the left motor up by n
+  FR.updateSpeed(FR.getSpeed() - minIncrement);
+  FL.updateSpeed(FL.getSpeed() + minIncrement);
+  BR.updateSpeed(BR.getSpeed() - minIncrement);
+  BL.updateSpeed(BL.getSpeed() + minIncrement);
   }
-void Drivetrain :: updateSpeed(int speed){
-  //Update the speed on all wheels while maintaining any turn arcs
-  //Speed input should be the amount we want to speed up
-  //With min/max of -255 to 255
-  //Use negative integer to slow
+void  Drivetrain :: accelerate(){
+    //Turn right - Basic logic is to slow the right motors by n
+    //and speed the left motor up by n
+    FR.updateSpeed(FR.getSpeed() + minIncrement);
+    FL.updateSpeed(FL.getSpeed() + minIncrement);
+    BR.updateSpeed(BR.getSpeed() + minIncrement);
+    BL.updateSpeed(BL.getSpeed() + minIncrement);
+    }
+void  Drivetrain :: decelerate(){
+    //Turn right - Basic logic is to slow the right motors by n
+    //and speed the left motor up by n
+    FR.updateSpeed(FR.getSpeed() - minIncrement);
+    FL.updateSpeed(FL.getSpeed() - minIncrement);
+    BR.updateSpeed(BR.getSpeed() - minIncrement);
+    BL.updateSpeed(BL.getSpeed() - minIncrement);
+    }
+int   Drivetrain :: calcDelta(int speedIn, int operation) {
+  //Operation 1 = Addition, 0 = Subtraction
+  //if current speed -/+ minIncrement < 0
+  //Run this for each motor
+  float delta;
+  //Subtraction
+  if (operation == 0){
+    delta = speedIn - minIncrement;
+    if(delta < 0){
+      nextDirection = 1;
+    }
+    else{
+      nextDirection = 0;
+    }
+  }
+    //Addition
+  else{
+    delta = speedIn + minIncrement;
+    if (delta < 0){
+      nextDirection = 0;
+      }
+    else{
+      nextDirection = 1;
+      }
+    }
+  return static_cast<int>(delta);
+
+  //set direction 1
+  //if current speed -/+ minIncrement > 0
+  //Set direction 0
+  //updateSpeed to delta
+}
+void  Drivetrain :: updateSpeed(int speedIn){
+  //Does not maintain arcs
+  //Speed input should be the new speed
+  //With min/max of 0 to 255
+  //Use negative integer to reverse
+  speed=speedIn;
+  if(speed < 0){
+    //Don't let the speed go below 0
+    speed = 0;
+    }
+  else if(speed > 255){
+    //Don't let the speed go above 255
+    speed=255;
+  }
   FR.updateSpeed(speed);
   FL.updateSpeed(speed);
   BR.updateSpeed(speed);
   BL.updateSpeed(speed);
   }
-void Drivetrain :: testBR(int in){
+void  Drivetrain :: testBR(int in){
   if (in == 1){
     BR.updateSpeed(255);
     }
@@ -67,7 +125,7 @@ void Drivetrain :: testBR(int in){
     BR.updateSpeed(0);
     }
   }
-void Drivetrain :: testBL(int in){
+void  Drivetrain :: testBL(int in){
   if (in == 1){
     BL.updateSpeed(255);
     }
@@ -75,7 +133,7 @@ void Drivetrain :: testBL(int in){
     BL.updateSpeed(0);
     }
   }
-void Drivetrain :: testFL(int in){
+void  Drivetrain :: testFL(int in){
   if (in == 1){
     FL.updateSpeed(255);
     }
@@ -83,7 +141,7 @@ void Drivetrain :: testFL(int in){
     FL.updateSpeed(0);
     }
   }
-void Drivetrain :: testFR(int in){
+void  Drivetrain :: testFR(int in){
   if (in == 1){
     FR.updateSpeed(255);
     }
@@ -91,3 +149,6 @@ void Drivetrain :: testFR(int in){
     FR.updateSpeed(0);
     }
 }
+int   Drivetrain :: getMI(){
+  return minIncrement;
+  }
