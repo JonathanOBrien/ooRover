@@ -177,22 +177,13 @@ void Rover :: manual(){
     switch(serialOut.read()){
       case 119:
         //W
-<<<<<<< HEAD
         drivetrain.accelerate();
-=======
-        speed=speed+32;
-        drivetrain.updateSpeed(speed);
->>>>>>> e25a7887afaaf102b2e5aa2cf7921f616ef224e1
         serialOut.println("w\r");
         continue;
       case 115:
       //S
       speed=speed-32;
-<<<<<<< HEAD
         drivetrain.decelerate();
-=======
-        drivetrain.updateSpeed(speed);
->>>>>>> e25a7887afaaf102b2e5aa2cf7921f616ef224e1
         serialOut.println("s\r");
         continue;
       case 97:
@@ -212,10 +203,6 @@ void Rover :: manual(){
         continue;
       case 99:
         //C
-<<<<<<< HEAD
-=======
-        drivetrain.updateSpeed(0);
->>>>>>> e25a7887afaaf102b2e5aa2cf7921f616ef224e1
         drivetrain.stop();
         speed=0;
         serialOut.println("c\r");
