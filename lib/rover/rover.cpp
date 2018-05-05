@@ -182,7 +182,6 @@ void Rover :: manual(){
         continue;
       case 115:
       //S
-      speed=speed-32;
         drivetrain.decelerate();
         serialOut.println("s\r");
         continue;
@@ -200,6 +199,7 @@ void Rover :: manual(){
         //E
         drivetrain.updateSpeed(255);
         speed=255;
+        serialOut.println("e\r");
         continue;
       case 99:
         //C
@@ -209,8 +209,8 @@ void Rover :: manual(){
         continue;
       case 120:
         //X
-        setSpeed(-255);
-        serialOut.println("c\r");
+        drivetrain.updateSpeed(-255);
+        serialOut.println("x\r");
         continue;
       case 49:
         //1
