@@ -6,11 +6,11 @@
 #include "SystemClock.h"
 using namespace std;
 
-//Define the minimum increment
-int minIncrement = 32;
-int nextDirection = 0;
+
 
 Drivetrain :: Drivetrain(){
+  //Define the minimum increment
+  minIncrement = 32;
   //create wheels for the drivetrain
   //TODO: this needs to support more vehicle types
   //TODO: modular based on number of wheels
@@ -67,7 +67,7 @@ void  Drivetrain :: decelerate(){
     BL.updateSpeed(BL.getSpeed() - minIncrement);
     }
 int   Drivetrain :: calcDelta(int speedIn, int operation) {
-  //Operation 1 = Addition, 0 = Subtraction
+  /*/Operation 1 = Addition, 0 = Subtraction
   //if current speed -/+ minIncrement < 0
   //Run this for each motor
   float delta;
@@ -96,7 +96,8 @@ int   Drivetrain :: calcDelta(int speedIn, int operation) {
   //set direction 1
   //if current speed -/+ minIncrement > 0
   //Set direction 0
-  //updateSpeed to delta
+  //updateSpeed to delta*/
+  return 0;
 }
 void  Drivetrain :: updateSpeed(int speedIn){
   //Does not maintain arcs
@@ -104,8 +105,8 @@ void  Drivetrain :: updateSpeed(int speedIn){
   //With min/max of 0 to 255
   //Use negative integer to reverse
   speed=speedIn;
-  if(speed < 0){
-    //Don't let the speed go below 0
+  if(speed < -255){
+    //Don't let the speed go below -255
     speed = 0;
     }
   else if(speed > 255){
@@ -116,10 +117,10 @@ void  Drivetrain :: updateSpeed(int speedIn){
   FL.updateSpeed(speed);
   BR.updateSpeed(speed);
   BL.updateSpeed(speed);
-  }
+}
 void  Drivetrain :: testBR(int in){
   if (in == 1){
-    BR.updateSpeed(255);
+    BR.updateSpeed(-255);
     }
   else{
     BR.updateSpeed(0);
@@ -127,7 +128,7 @@ void  Drivetrain :: testBR(int in){
   }
 void  Drivetrain :: testBL(int in){
   if (in == 1){
-    BL.updateSpeed(255);
+    BL.updateSpeed(-255);
     }
   else{
     BL.updateSpeed(0);
@@ -135,7 +136,7 @@ void  Drivetrain :: testBL(int in){
   }
 void  Drivetrain :: testFL(int in){
   if (in == 1){
-    FL.updateSpeed(255);
+    FL.updateSpeed(-255);
     }
   else{
     FL.updateSpeed(0);
@@ -143,7 +144,7 @@ void  Drivetrain :: testFL(int in){
   }
 void  Drivetrain :: testFR(int in){
   if (in == 1){
-    FR.updateSpeed(255);
+    FR.updateSpeed(-255);
     }
   else{
     FR.updateSpeed(0);

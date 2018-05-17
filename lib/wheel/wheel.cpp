@@ -13,102 +13,106 @@ Wheel :: Wheel(){
 }
         void  Wheel :: initalize(char const * location, char const * sideIN){
           motorLocation = location;
-          //Set the default direction based on the side of the motor
-          if(strcmp(sideIN,"left") == 0){
-            //set side to 0
-            direction=0;
-            }
-          else if(strcmp(sideIN,"right") == 0){
-            //set side to 1;
-            direction=1;
-            }
+          //Set initial speed to 0
+          speed=0;
+          signedSpeed=0;
+          //Set the initial direction based on the side of the motor
           //Initialize our ouput pins
           //set Pin Modes
           if(strcmp(motorLocation,"FR") == 0){
             setGpioPinModeOutput(FRPWM);
             setGpioPinModeOutput(FR1);
             setGpioPinModeOutput(FR2);
+            side=1;
+            direction=1;
             }
           else if(strcmp(motorLocation,"FL") == 0){
             setGpioPinModeOutput(FLPWM);
             setGpioPinModeOutput(FL1);
             setGpioPinModeOutput(FL2);
+            side=0;
+            direction=0;
             }
           else if(strcmp(motorLocation,"BR") == 0){
             setGpioPinModeOutput(BRPWM);
             setGpioPinModeOutput(BR1);
             setGpioPinModeOutput(BR2);
+            side=1;
+            direction=1;
             }
           else if(strcmp(motorLocation,"BL") == 0){
             setGpioPinModeOutput(BLPWM);
             setGpioPinModeOutput(BL1);
             setGpioPinModeOutput(BL2);
-            }
-        }
-        void  Wheel :: setDirection(int directionIn){
-          //Sets the direction forward or reverse
-          //1 = forward
-          //0 = reverse
-          //2 = swap to opposite of current
-          if(directionIn == 1){
-            //direction forward was specified
-            //set direction to 1
-            direction=1;
-            }
-          else if(directionIn == 0){
-            //direction backward was specified
-            //set direction to 0;
+            side=0;
             direction=0;
             }
-          else if(directionIn == 2){
-            //reverse Direction
-            //set direction to ?;
-            if(direction == 0){
+        }
+        void  Wheel :: setDirection(int speedIn){
+          //Sets the direction forward or reverse based on the speed inpuit
+          if(side == 0){
+            //Left Side Motor
+            if(speedIn < 0){
+              //Reverse
               direction=1;
               }
-            else{
+            else if(speedIn > 0){
+              //Forward
               direction=0;
               }
             }
-          writeMotors();
+          else if(side == 1){
+            //Right side motor
+            if(speedIn < 0){
+              //Reverse
+              direction=0;
+              }
+            else if(speedIn > 0){
+              //Forward
+              direction=1;
+              }
+            }
           }
         int   Wheel :: getSpeed(){
-          return speed;
+          return signedSpeed;
         }
+        int   Wheel :: normalizeSpeed(int speedIn){
+          //Limit speed to 255 through -255
+          if(speedIn < -255){
+            speedIn=-255;
+            }
+          else if (speedIn > 255){
+            speedIn=255;
+            }
+          signedSpeed=speedIn;
+          //Normalize the output to 0-255
+          if(speedIn<0){
+            //swap the output to positive
+            speedIn = speedIn * -1;
+            }
+          return speedIn;
+          }
         void  Wheel :: testMode(int mode){
           //Test this wheel
           if (mode == 1){
             updateSpeed(255);
+            }
+          else if (mode == 2){
+            updateSpeed(-255);
             }
           else{
             updateSpeed(0);
             }
         }
         void  Wheel :: updateSpeed(int speedIn){
-/*        //Check if we need to change the direction
-          //(lnzs < 0 && speedIn < 0) || (lnzs > 0 && speedIn > 0)
-          if((lastNonZeroSpeed < 0 && speedIn > 0) || (lastNonZeroSpeed > 0 && speedIn < 0)){
-            //Set direction to 2 (swap current direction)
-            setDirection(2);
-            }
-          //Set the last non-zero speed
-          if (speed != 0){
-            lastNonZeroSpeed = speed;
-          }*/
-          //Update current speed
-          speed=speedIn;
-          if(speed < -255){
-            //Don't let the speed go below 0
-            speed = -255;
-            }
-          else if(speed > 255){
-            //Don't let the speed go above 255
-            speed=255;
-          }
-          //Updte the motors
-          writeMotors();
+          //Set the Direction
+          setDirection(speedIn);
+          //Normalize the speed
+          speed=normalizeSpeed(speedIn);
+          //Update the motors
+          writeMotor();
         }
-        void  Wheel :: writeMotors(){
+        void  Wheel :: writeMotor(){
           //update to speed controller
           if(strcmp(motorLocation,"FR") == 0){
             if(direction == 1){
